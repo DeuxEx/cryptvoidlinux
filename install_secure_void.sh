@@ -105,6 +105,8 @@ cleanup() {
     cryptsetup close "${luksName}"
   fi
 }
+
+#never run this trap anymore
 #trap cleanup EXIT
 
 #====================#
