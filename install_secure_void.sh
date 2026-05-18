@@ -151,7 +151,7 @@ deux_init() {
 
   
   #show wifi adapters
-  ls /sys/class/net xargs -n 1 basename | columns
+  ls /sys/class/net xargs -n 1 basename | column
   printf "select your network interface: "
   read -r wifiInterface
   #wlp0s20f3
