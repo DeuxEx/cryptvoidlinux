@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 # This script is licensed under the MIT License.
 # Copyright (c) 2026 Luca Gödde
-## author: Gödde, Luca
-## modified: Pär, Wennergrund
+# author: Gödde, Luca
+# modified: Pär, Wennergrund
 
-## project: Void Linux Install script
-## desc: An attempt to automate the install process of Void Linux (live environment)
-## date: 2026-03-07
-## updated: 2026-05-18
+# project: Void Linux Install script
+# desc: An attempt to automate the install process of Void Linux (live environment)
+# updated: 2026-05-18
 
-## https://codeberg.org/AculBoy/VoidLinuxInstaller
-## This Void Linux installation script aims to streamline the installation process with optional 
-## disk encryption (with an unencrypted boot). It offers a functioning, minimalistic installation
-## with the btrfs filesystem, grub bootloader, optional swap (zswap), and optional LUKS1 disk encryption.
+
+# This Void Linux installation script aims to streamline the installation process with optional 
+# disk encryption (with an unencrypted boot). It offers a functioning, minimalistic installation
+# with the btrfs filesystem, grub bootloader, optional swap (zswap), and optional LUKS1 disk encryption.
 
 
 
