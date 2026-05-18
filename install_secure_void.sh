@@ -140,32 +140,21 @@ deux_init() {
   local selectedLayout wifiSsid wifiPassphrase wifiInterface
 
   ls /usr/share/kbd/keymaps/i386/qwerty/* | xargs -n 1 basename | column
+
   #find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | sort | less --RAW-CONTROL-CHARS --no-init
 
-  printf "select keyboard layout (for example: se-latin1): "
-  read -r selectedLayout
-  #run_command loadkeys selectedLayout
+  #load keyboard layout
+  #loadkeys se-latin1
 
-  while true; do
-    #find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | sort | less --RAW-CONTROL-CHARS --no-init
-    printf "%bPlease select a keyboard layout: %b" "${CYAN}" "${NORMAL}"
-    read -r selectedLayout
+  printf "%bPlease select a keyboard layout (example: se-latin1): %b" "${CYAN}" "${NORMAL}"
+  read -r selectedLayout
 
     if run_command loadkeys "${selectedLayout}" &>/dev/null; then
       selectedKeyboardLayout="${selectedLayout}"
       break
     fi
 
-    printf "%bNot a valid layout.%b\n" "${YELLOW}" "${NORMAL}"
-    sleep 1
-    clear
-  done
-
-    
-  #load keyboard layout
-  #loadkeys se-latin1
-
-  
+      
   #show wifi adapters
   ls /sys/class/net xargs -n 1 basename | column
   printf "select your network interface: "
