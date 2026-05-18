@@ -131,28 +131,48 @@ ask_yn() {
 
 
 
-#deux_init() {
+deux_init() {
   ## 1) boot using usb void live
   #list keyboard layout
   #ls /usr/share/kbd/keymaps/i386/qwerty/se*
+  local selectedLayout wifiSsid wifiPassphrase wifiInterface
+
+  ls /usr/share/kbd/keymaps/i386/qwerty/* | xargs -n 1 basename | columns
+  printf "select keyboard layout (for example: se-latin1): "
+  read -r selectedLayout
+  loadkeys selectedLayout
+  
   #load keyboard layout
   #loadkeys se-latin1
-  #show wifi adapters
-  #ls /sys/class/net
-  #wlp0s20f3
+
   
-  #cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
+  #show wifi adapters
+  ls /sys/class/net xargs -n 1 basename | columns
+  printf "select your network interface: "
+  read -r wifiInterface
+  #wlp0s20f3
+
+  printf "enter the network password"
+  read -r wifiPassphrase
+  
+  cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
+  
   #wpa_passphrase XiaomiPro 12345678 >> /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
-  #sv stop wpa_supplicant
+
+  wpa_passphrase wifiSsid wifiPassphrase >> /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
+  
+  sv stop wpa_supplicant
   #wpa_supplicant -B -i wlp0s20f3 -c /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
-  #sv start wpa_supplicant
+  wpa_supplicant -B -i wifiInterface -c /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
+  
+  sv start wpa_supplicant
   
   ## download link in bash raw
   ## xbps-fetch https://raw.githubusercontent.com/DeuxEx/cryptvoidlinux/refs/heads/main/install_secure_void.sh
   
   ## chmod +x $HOME/install
   ## And then execute it
-#}
+}
 
 
 
