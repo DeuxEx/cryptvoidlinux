@@ -105,7 +105,7 @@ cleanup() {
     cryptsetup close "${luksName}"
   fi
 }
-trap cleanup EXIT
+#trap cleanup EXIT
 
 #====================#
 #  HELPER FUNCTIONS  #
