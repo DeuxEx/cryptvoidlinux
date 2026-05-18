@@ -134,25 +134,25 @@ ask_yn() {
 
 #deux_init() {
   ## 1) boot using usb void live
-  #keyboard layout
+  #list keyboard layout
   #ls /usr/share/kbd/keymaps/i386/qwerty/se*
+  #load keyboard layout
   #loadkeys se-latin1
-  #wifi
+  #show wifi adapters
   #ls /sys/class/net
   #wlp0s20f3
-  #cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-test.conf
-  #wpa_passphrase XiamoiPro 12345678 >> /etc/wpa_supplicant/wpa_supplicant-test.conf
+  
+  #cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
+  #wpa_passphrase XiaomiPro 12345678 >> /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
   #sv stop wpa_supplicant
-  #wpa_supplicant -B -i wlp0s20f3 -c /etc/wpa_supplicant/wpa_supplicant-test.conf
+  #wpa_supplicant -B -i wlp0s20f3 -c /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
   #sv start wpa_supplicant
   
   ## download link in bash raw
   ## xbps-fetch https://raw.githubusercontent.com/DeuxEx/cryptvoidlinux/refs/heads/main/install_secure_void.sh
   
-  ## After the script successfully downloads, you need to make it executable via:
   ## chmod +x $HOME/install
   ## And then execute it
-  #printf "testfunc"
 #}
 
 
