@@ -219,7 +219,7 @@ isOnline() {
 
 # Check if the user is the superuser
 check_if_root() {
-  clear
+  #clear
   if ! [[ ${USER_ID} -eq 0 ]]; then
     printf "%bElevating permissions...%b\n" "${YELLOW}" "${NORMAL}"
     sudo "${0}"
@@ -230,7 +230,7 @@ check_if_root() {
 
 # Check if firmware interface is uefi
 check_if_uefi() {
-  clear
+  #clear
   if ! [[ -d "${EFIVARDIR}" ]]; then
     printf "%bMake sure that your on a uefi system!%b\n" "${YELLOW}" "${NORMAL}"
     exit 1
@@ -242,7 +242,7 @@ check_if_uefi() {
 # Shows the user a list of available keyboard layouts and prompts the user to select one
 select_keyboard_layout() {
   local selectedLayout
-  clear
+  #clear
 
   while true; do
     find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | sort | less --RAW-CONTROL-CHARS --no-init
@@ -256,7 +256,7 @@ select_keyboard_layout() {
 
     printf "%bNot a valid layout.%b\n" "${YELLOW}" "${NORMAL}"
     sleep 1
-    clear
+    #clear
   done
 }
 
@@ -266,7 +266,7 @@ select_keyboard_layout() {
 connect_internet() {
   local wifiSsid wifiPassphrase wifiInterface
   mapfile -t interfaces < <(ip --color=auto -br link show | awk '{print $1}')
-  clear
+  #clear
 
   if isOnline; then
     printf "%bAlready connected to the internet.%b\n" "${GREEN}" "${NORMAL}"
@@ -276,7 +276,7 @@ connect_internet() {
 
   PS3='Select a network interface: '
   while true; do
-    clear
+    #clear
     select opt in "${interfaces[@]}"; do
       if [[ -z "${opt}" ]]; then
         printf "%bNot a valid input.%b\n" "${YELLOW}" "${NORMAL}"
@@ -293,7 +293,7 @@ connect_internet() {
   PS3=''
 
   while true; do
-    clear
+    #clear
     printf "%bEnter your wifi ssid: %b" "${CYAN}" "${NORMAL}"
     read -r wifiSsid
 
@@ -327,12 +327,12 @@ connect_internet() {
 # Also checks if the selected disk supports trimming
 select_disk() {
   mapfile -t disks < <(lsblk -d --noheading -o NAME)
-  clear
+  #clear
 
   PS3='Select disk: '
   select opt in "${disks[@]}"; do
     if [[ -n "${opt}" ]]; then
-      clear
+      #clear
       printf "%bTHE SELECTED DISK (/dev/${opt}) WILL BE COMPLETLY WIPED.\n ALL DATA WILL BE LOST.%b\n" "${YELLOW}" "${NORMAL}"
       if ! ask_yn "Do you want to continue"; then
         select_disk
@@ -341,7 +341,7 @@ select_disk() {
       break
     fi
     printf "%bNot a valid input.%b\n" "${YELLOW}" "${NORMAL}"
-    clear
+    #clear
   done
   PS3=''
 
@@ -361,7 +361,7 @@ select_disk() {
 format_disk() {
   run_command wipefs -af "${selectedDisk}"
   sleep 0.5
-  clear
+  #clear
 
   printf "%bThe disk will be formated using the following table (512M EFI; 1G BOOT; rest ROOT)%b\n" "${CYAN}" "${NORMAL}"
   if ! ask_yn "Do you agree with that"; then
@@ -383,7 +383,7 @@ format_disk() {
 # Prompts the user if they want to encrypt their root partition
 # and encrypt it if the user agrees
 encrypt_disk() {
-  clear
+  #clear
   if ! ask_yn "Do you want to encrypt your disk"; then
     isEncrypted=false
     return 0
@@ -394,7 +394,7 @@ encrypt_disk() {
   isEncrypted=true
 
   while true; do
-    clear
+    #clear
     if ! run_command cryptsetup luksFormat --type luks1 "${luksPartition}"; then
       continue
     fi
@@ -404,7 +404,7 @@ encrypt_disk() {
   done
 
   while true; do
-    clear
+    #clear
     printf "%bEnter a name for the encrypted partition: %b" "${CYAN}" "${NORMAL}"
     read -r luksName
 
@@ -422,7 +422,7 @@ encrypt_disk() {
 
 # creates the btrfs filesystem
 create_filesystem() {
-  clear
+  #clear
   mkfs.vfat -n "EFI" -F 32 "${efiPartition}"
   mkfs.ext4 -L "BOOT" "${bootPartition}"
   mkfs.btrfs -L "ROOT" "${rootPartition}"
@@ -432,7 +432,7 @@ create_filesystem() {
 
 # Mounts the newly created filesystem and creates the btrfs subvolumes
 mount_filesystem() {
-  clear
+  #clear
   if [[ "${isSsd}" ]]; then
     export BTRFS_OPTS=rw,noatime,discard=async,compress-force=zstd,space_cache=v2,commit=120
   else
@@ -467,7 +467,7 @@ mount_filesystem() {
 # Copys the xbps-keys over the the chroot environment and install the Void Linux base-system
 # Prompts the user if they want to enable the nonfree, multilib and multilib-nonfree repositorys
 install_base_system() {
-  clear
+  #clear
   mkdir -p /mnt/var/db/xbps/keys
   cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys
 
@@ -506,7 +506,7 @@ install_base_system() {
 # Mounts a pseudo filesystem and copys the resolv config over to the chroot environment
 # Also downloads the chroot script located in this repositorys and execute it inside the chroot environment
 enter_chroot() {
-  clear
+  #clear
 
   mount --rbind /dev /mnt/dev
   mount --make-rslave /mnt/dev
@@ -534,7 +534,7 @@ enter_chroot() {
 
 # Applys the finishing touches and reboots the system
 finish_installation() {
-  clear
+  #clear
 
   if ask_yn "It is recommended to reboot your system.\nDo you want to reboot"; then
     reboot
