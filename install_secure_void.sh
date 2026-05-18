@@ -149,19 +149,22 @@ deux_init() {
   printf "%bPlease select a keyboard layout (example: se-latin1): %b" "${CYAN}" "${NORMAL}"
   read -r selectedLayout
 
-    if run_command loadkeys "${selectedLayout}" &>/dev/null; then
-      selectedKeyboardLayout="${selectedLayout}"
-      break
-    fi
+#    if run_command loadkeys "${selectedLayout}" &>/dev/null; then
+#      selectedKeyboardLayout="${selectedLayout}"
+#      break
+#    fi
+
+  run_command loadkeys "${selectedLayout}" &>/dev/null;
+  selectedKeyboardLayout="${selectedLayout}"
 
       
   #show wifi adapters
-  ls /sys/class/net xargs -n 1 basename | column
-  printf "select your network interface: "
+  ls /sys/class/net | xargs -n 1 basename | column
+  printf "%bSelect your network interface (example wlp0s20f3) : %b" "${CYAN}" "${NORMAL}"
   read -r wifiInterface
   #wlp0s20f3
 
-  printf "enter the network password"
+  printf "%bEnter the network password: %b" "${CYAN}" "${NORMAL}"
   read -r wifiPassphrase
   
   cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
