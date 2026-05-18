@@ -145,13 +145,22 @@ deux_init() {
   printf "select keyboard layout (for example: se-latin1): "
   read -r selectedLayout
   #run_command loadkeys selectedLayout
-  if run_command loadkeys "${selectedLayout}" &>/dev/null; then
-    selectedKeyboardLayout="${selectedLayout}"
-    break
-  fi
 
-  printf "%bNot a valid layout.%b\n" "${YELLOW}" "${NORMAL}"
-  sleep 1
+  while true; do
+    #find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | sort | less --RAW-CONTROL-CHARS --no-init
+    printf "%bPlease select a keyboard layout: %b" "${CYAN}" "${NORMAL}"
+    read -r selectedLayout
+
+    if run_command loadkeys "${selectedLayout}" &>/dev/null; then
+      selectedKeyboardLayout="${selectedLayout}"
+      break
+    fi
+
+    printf "%bNot a valid layout.%b\n" "${YELLOW}" "${NORMAL}"
+    sleep 1
+    clear
+  done
+
     
   #load keyboard layout
   #loadkeys se-latin1
