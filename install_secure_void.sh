@@ -139,12 +139,12 @@ deux_init() {
   #ls /usr/share/kbd/keymaps/i386/qwerty/se*
   local selectedLayout wifiSsid wifiPassphrase wifiInterface
 
-  #ls /usr/share/kbd/keymaps/i386/qwerty/* | xargs -n 1 basename | columns
-  find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | sort | less --RAW-CONTROL-CHARS --no-init
+  ls /usr/share/kbd/keymaps/i386/qwerty/* | xargs -n 1 basename | column
+  #find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | sort | less --RAW-CONTROL-CHARS --no-init
 
-  printf "select keyboard layout (for example: sv-latin1): "
+  printf "select keyboard layout (for example: se-latin1): "
   read -r selectedLayout
-  loadkeys selectedLayout
+  run_command loadkeys selectedLayout
   
   #load keyboard layout
   #loadkeys se-latin1
