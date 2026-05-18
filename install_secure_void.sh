@@ -144,8 +144,15 @@ deux_init() {
 
   printf "select keyboard layout (for example: se-latin1): "
   read -r selectedLayout
-  run_command loadkeys selectedLayout
-  
+  #run_command loadkeys selectedLayout
+  if run_command loadkeys "${selectedLayout}" &>/dev/null; then
+    selectedKeyboardLayout="${selectedLayout}"
+    break
+  fi
+
+  printf "%bNot a valid layout.%b\n" "${YELLOW}" "${NORMAL}"
+  sleep 1
+    
   #load keyboard layout
   #loadkeys se-latin1
 
