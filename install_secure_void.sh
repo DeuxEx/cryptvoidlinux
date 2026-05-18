@@ -147,7 +147,7 @@ ask_yn() {
   #sv start wpa_supplicant
   
   ## download link in bash raw
-  ## xbps-fetch https://raw.githubusercontent.com/deuxex/voidlinux/refs/heads/main/install_secure_void
+  ## xbps-fetch https://raw.githubusercontent.com/DeuxEx/cryptvoidlinux/refs/heads/main/install_secure_void.sh
   
   ## After the script successfully downloads, you need to make it executable via:
   ## chmod +x $HOME/install
@@ -489,7 +489,7 @@ enter_chroot() {
   cp /etc/resolv.conf /mnt/etc/
 
   #curl -o /mnt/root/chroot --fail https://codeberg.org/AculBoy/VoidLinuxInstaller/raw/branch/main/chroot
-  xbps-fetch -v -o /mnt/root/chroot https://raw.githubusercontent.com/DeuxEx/voidlinux/refs/heads/main/chroot
+  xbps-fetch -v -o /mnt/root/chroot https://raw.githubusercontent.com/DeuxEx/cryptvoidlinux/refs/heads/main/chroot.sh
 
   chmod +x /mnt/root/chroot
 
