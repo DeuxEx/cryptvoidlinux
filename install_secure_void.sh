@@ -139,9 +139,8 @@ deux_init() {
   #ls /usr/share/kbd/keymaps/i386/qwerty/se*
   local selectedLayout wifiSsid wifiPassphrase wifiInterface
 
-  ls /usr/share/kbd/keymaps/i386/qwerty/* | xargs -n 1 basename | column
 
-  #find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | sort | less --RAW-CONTROL-CHARS --no-init
+  find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "${BLUE}%f\0${NORMAL}\n" | sed -e 's/\..*$//' | column
 
   #load keyboard layout
   #loadkeys se-latin1
@@ -149,38 +148,47 @@ deux_init() {
   printf "%bPlease select a keyboard layout (example: se-latin1): %b" "${CYAN}" "${NORMAL}"
   read -r selectedLayout
 
-#    if run_command loadkeys "${selectedLayout}" &>/dev/null; then
-#      selectedKeyboardLayout="${selectedLayout}"
-#      break
-#    fi
-
   run_command loadkeys "${selectedLayout}" &>/dev/null;
   selectedKeyboardLayout="${selectedLayout}"
+  printf "%bSelected Keyboard is: %b"$selectedKeyboardLayout
 
-      
   #show wifi adapters
   ls /sys/class/net | xargs -n 1 basename | column
+  
   printf "%bSelect your network interface (example wlp0s20f3) : %b" "${CYAN}" "${NORMAL}"
   read -r wifiInterface
   #wlp0s20f3
 
-  printf "%bEnter the network password: %b" "${CYAN}" "${NORMAL}"
+  printf "%bEnter the wifi name (sid): %b" "${CYAN}" "${NORMAL}"
+  read -r wifiSsid
+
+
+  printf "%bEnter the wifi password: %b" "${CYAN}" "${NORMAL}"
   read -r wifiPassphrase
-  
-  cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
+
+
+  printf "%bCopying wpa.conf to setup.conf%b\n"
+  run_command cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-securesetup.conf &>/dev/null;
   
   #wpa_passphrase XiaomiPro 12345678 >> /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
 
-  wpa_passphrase wifiSsid wifiPassphrase >> /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
-  
-  sv stop wpa_supplicant
+  printf "%bWPA Passphrase is generating the .conf-file%b\n"
+  run_command wpa_passphrase wifiSsid wifiPassphrase >> /etc/wpa_supplicant/wpa_supplicant-securesetup.conf &>/dev/null;
+
+  printf "%bStopping the wpa_supplicant service%b\nh"
+  run_command sv stop wpa_supplicant &>/dev/null;
+
   #wpa_supplicant -B -i wlp0s20f3 -c /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
-  wpa_supplicant -B -i wifiInterface -c /etc/wpa_supplicant/wpa_supplicant-securesetup.conf
+  printf "%b%b"
+  run_command wpa_supplicant -B -i wifiInterface -c /etc/wpa_supplicant/wpa_supplicant-securesetup.conf &>/dev/null;
   
-  sv start wpa_supplicant
+  printf "%bRestarting the wpa_supplicant service%b\n"
+  run_command sv start wpa_supplicant &>/dev/null;
   
   ## download link in bash raw
-  ## xbps-fetch https://raw.githubusercontent.com/DeuxEx/cryptvoidlinux/refs/heads/main/install_secure_void.sh
+  
+  printf "%bFetching the shellscript for secure void linux setup automated setup%b\n"
+  run_command xbps-fetch https://raw.githubusercontent.com/DeuxEx/cryptvoidlinux/refs/heads/main/install_secure_void.sh &>/dev/null;
   
   ## chmod +x $HOME/install
   ## And then execute it
