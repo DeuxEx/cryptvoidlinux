@@ -150,7 +150,7 @@ deux_init() {
 
   run_command loadkeys "${selectedLayout}" &>/dev/null;
   selectedKeyboardLayout="${selectedLayout}"
-  printf "%bSelected Keyboard is: %b"$selectedKeyboardLayout
+  printf "%bSelected Keyboard is: %b"$selectedKeyboardLayout "\n"
 
   #show wifi adapters
   ls /sys/class/net | xargs -n 1 basename | column
