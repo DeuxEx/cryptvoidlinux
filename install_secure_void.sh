@@ -80,18 +80,22 @@ BASE_PACKAGES=(
   bash-completion
   apparmor
   git
-  wget
-  #curl (use xbps-fetch instead)
   rsync
   tar
-  unzip
-  zip
   xmirror
   NetworkManager
   nano
   mc
   vsv
+  metalog
+  fastfetch
+  vivaldi
+  firefox
+  tree
+  btop
+  htop
 )
+
 
 #===========#
 #  CLEANUP  #
